@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { useAuthStore, useThemeStore } from '../store/store';
+import { useAuthStore, useThemeStore, useLocationStore } from '../store/store';
 import { useNavigate } from 'react-router-dom';
+import LocationSetupModal from '../components/LocationSetupModal';
 import './Profile.css';
 
 const Profile = () => {
   const { user, logout } = useAuthStore();
   const { isDark, toggleTheme } = useThemeStore();
+  const { defaultLocation } = useLocationStore();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || 'User',
     email: user?.email || '',
@@ -144,6 +147,10 @@ const Profile = () => {
 
         <div className="settings-section">
           <h3>Settings</h3>
+          <button className="settings-item" onClick={() => setShowLocationModal(true)}>
+            <span>📍 Location: {defaultLocation.name}</span>
+            <span>→</span>
+          </button>
           <button className="settings-item" onClick={toggleTheme}>
             <span>{isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}</span>
             <span>→</span>
@@ -166,6 +173,11 @@ const Profile = () => {
           🚪 Logout
         </button>
       </div>
+
+      <LocationSetupModal
+        isOpen={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+      />
     </div>
   );
 };

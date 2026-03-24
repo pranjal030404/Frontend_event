@@ -56,3 +56,19 @@ export const useToastStore = create((set) => ({
     }));
   }
 }));
+
+export const useLocationStore = create((set) => ({
+  defaultLocation: {
+    name: localStorage.getItem('defaultLocationName') || 'Noida Sector 62',
+    latitude: parseFloat(localStorage.getItem('defaultLocationLat') || '28.4089'),
+    longitude: parseFloat(localStorage.getItem('defaultLocationLon') || '77.3178')
+  },
+  isLocationSet: localStorage.getItem('isLocationSet') === 'true',
+  setDefaultLocation: (location) => {
+    localStorage.setItem('defaultLocationName', location.name);
+    localStorage.setItem('defaultLocationLat', location.latitude);
+    localStorage.setItem('defaultLocationLon', location.longitude);
+    localStorage.setItem('isLocationSet', 'true');
+    set({ defaultLocation: location, isLocationSet: true });
+  }
+}));
