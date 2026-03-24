@@ -156,7 +156,7 @@
 
 .create-btn {
   position: fixed;
-  bottom: 90px;
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   right: 20px;
   width: 60px;
   height: 60px;
@@ -171,7 +171,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  z-index: 50;
+  z-index: 9999;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
@@ -193,5 +193,10 @@
 
   .home-content {
     min-height: 400px;
+  }
+
+  .create-btn {
+    bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
   }
 }
