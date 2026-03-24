@@ -200,3 +200,23 @@
     right: 16px;
   }
 }
+
+/* Dark mode support */
+:root.dark .home {
+  background: var(--gray-200);
+}
+
+:root.dark .search-bar input {
+  background: var(--gray-100);
+  color: var(--gray-900);
+}
+
+:root.dark .search-bar input:focus {
+  background: var(--gray-100);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+:root.dark .selected-plan-info {
+  background: var(--gray-200);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+}

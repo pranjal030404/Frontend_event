@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import Chats from './pages/Chats';
 import BottomNav from './components/BottomNav';
 import ToastContainer from './components/ToastContainer';
-import { useAuthStore } from './store/store';
+import { useAuthStore, useThemeStore } from './store/store';
 import { useToastStore } from './store/store';
 import './styles/globals.css';
 import './App.css';
@@ -22,6 +22,15 @@ function App() {
   const token = useAuthStore((state) => state.token);
   const toasts = useToastStore((state) => state.toasts);
   const removeToast = useToastStore((state) => state.removeToast);
+  const isDark = useThemeStore((state) => state.isDark);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
 
   return (
     <Router>

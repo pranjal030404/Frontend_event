@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useAuthStore } from '../store/store';
+import { useAuthStore, useThemeStore } from '../store/store';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
 const Profile = () => {
   const { user, logout } = useAuthStore();
+  const { isDark, toggleTheme } = useThemeStore();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,6 +26,20 @@ const Profile = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          avatar: reader.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSave = () => {
@@ -68,6 +83,20 @@ const Profile = () => {
           </div>
         ) : (
           <div className="edit-form">
+            <div className="form-group">
+              <label>Profile Picture</label>
+              <div className="avatar-upload">
+                <img src={formData.avatar} alt="Preview" className="avatar-preview" />
+                <input
+                  type="file"
+                  name="avatar"
+                  onChange={handleAvatarChange}
+                  accept="image/*"
+                  className="avatar-input"
+                />
+              </div>
+            </div>
+
             <div className="form-group">
               <label>Name</label>
               <input
@@ -115,6 +144,10 @@ const Profile = () => {
 
         <div className="settings-section">
           <h3>Settings</h3>
+          <button className="settings-item" onClick={toggleTheme}>
+            <span>{isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}</span>
+            <span>→</span>
+          </button>
           <button className="settings-item">
             <span>🔔 Notifications</span>
             <span>→</span>

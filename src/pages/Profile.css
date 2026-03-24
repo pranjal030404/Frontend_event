@@ -167,6 +167,31 @@
   cursor: not-allowed;
 }
 
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--gray-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-input {
+  width: 100% !important;
+  padding: 12px !important;
+  border: 2px dashed var(--gray-300) !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  background: var(--gray-50) !important;
+}
+
 .button-group {
   display: flex;
   gap: 8px;
@@ -245,4 +270,81 @@
   .profile {
     height: 100%;
   }
+}
+
+/* Dark mode support */
+:root.dark .profile {
+  background: var(--gray-50);
+}
+
+:root.dark .avatar {
+  border-color: var(--gray-800);
+}
+
+:root.dark .profile-header {
+  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+}
+
+:root.dark .info-card {
+  background: var(--gray-200);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+:root.dark .info-item {
+  border-bottom-color: var(--gray-300);
+}
+
+:root.dark .edit-form {
+  background: var(--gray-200);
+}
+
+:root.dark .form-group input,
+:root.dark .form-group textarea {
+  border-color: var(--gray-300);
+  background: var(--gray-100);
+  color: var(--gray-900);
+}
+
+:root.dark .form-group input:focus,
+:root.dark .form-group textarea:focus {
+  background: var(--gray-100);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+:root.dark .form-group input:disabled {
+  background: var(--gray-300);
+  color: var(--gray-500);
+}
+
+:root.dark .avatar-preview {
+  border-color: var(--gray-300);
+}
+
+:root.dark .avatar-input {
+  border-color: var(--gray-300) !important;
+  background: var(--gray-100) !important;
+}
+
+:root.dark .settings-section {
+  background: var(--gray-200);
+}
+
+:root.dark .settings-section h3 {
+  background: var(--gray-300);
+  border-bottom-color: var(--gray-400);
+  color: var(--gray-900);
+}
+
+:root.dark .settings-item {
+  border-bottom-color: var(--gray-300);
+  color: var(--gray-900);
+}
+
+:root.dark .settings-item:hover {
+  background: var(--gray-300);
+}
+
+:root.dark .logout-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #60a5fa;
 }

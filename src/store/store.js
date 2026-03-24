@@ -15,6 +15,17 @@ export const useAuthStore = create((set) => ({
   }
 }));
 
+export const useThemeStore = create((set) => ({
+  isDark: localStorage.getItem('theme') === 'dark' || false,
+  toggleTheme: () => {
+    set((state) => {
+      const newValue = !state.isDark;
+      localStorage.setItem('theme', newValue ? 'dark' : 'light');
+      return { isDark: newValue };
+    });
+  }
+}));
+
 export const usePlanStore = create((set, get) => ({
   plans: [],
   selectedPlan: null,
