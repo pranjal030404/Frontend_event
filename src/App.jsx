@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import Home from './pages/Home';
@@ -8,7 +8,8 @@ import Profile from './pages/Profile';
 import Chats from './pages/Chats';
 import BottomNav from './components/BottomNav';
 import ToastContainer from './components/ToastContainer';
-import { useAuthStore } from './store/store';
+import LocationSetupModal from './components/LocationSetupModal';
+import { useAuthStore, useThemeStore, useLocationStore } from './store/store';
 import { useToastStore } from './store/store';
 import './styles/globals.css';
 import './App.css';
@@ -22,6 +23,17 @@ function App() {
   const token = useAuthStore((state) => state.token);
   const toasts = useToastStore((state) => state.toasts);
   const removeToast = useToastStore((state) => state.removeToast);
+  const isDark = useThemeStore((state) => state.isDark);
+  const isLocationSet = useLocationStore((state) => state.isLocationSet);
+  const [showLocationModal, setShowLocationModal] = useState(!isLocationSet && !!token);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
 
   return (
     <Router>
@@ -64,6 +76,10 @@ function App() {
         </Routes>
         {token && <BottomNav />}
         <ToastContainer toasts={toasts} removeToast={removeToast} />
+        <LocationSetupModal
+          isOpen={showLocationModal}
+          onClose={() => setShowLocationModal(false)}
+        />
       </div>
     </Router>
   );

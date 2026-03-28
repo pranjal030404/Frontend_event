@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import { useLocationStore } from '../store/store';
 import './MapComponent.css';
 
 // Fix marker icons
@@ -12,34 +13,40 @@ L.Icon.Default.mergeOptions({
 });
 
 const MapComponent = ({ plans, onMarkerClick }) => {
-  const [center, setCenter] = useState([51.505, -0.09]);
+  const defaultLocation = useLocationStore((state) => state.defaultLocation);
+  const [center, setCenter] = useState([defaultLocation.latitude, defaultLocation.longitude]);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [hasLoggedFallback, setHasLoggedFallback] = useState(false);
+
+  useEffect(() => {
+    // Update center when default location changes
+    setCenter([defaultLocation.latitude, defaultLocation.longitude]);
+  }, [defaultLocation]);
 
   useEffect(() => {
     // Try to get user's location, but don't block if it fails
+    const timeoutId = setTimeout(() => {
+      setMapLoaded(true);
+    }, 3000); // Timeout after 3 seconds
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setCenter([position.coords.latitude, position.coords.longitude]);
           setMapLoaded(true);
+          clearTimeout(timeoutId);
         },
-        (error) => {
-          if (!hasLoggedFallback) {
-            if (error?.code === error.PERMISSION_DENIED) {
-              console.log('Location permission denied/blocked. Using default map coordinates.');
-            } else {
-              console.log('Could not get user location. Using default map coordinates.');
-            }
-            setHasLoggedFallback(true);
-          }
+        () => {
+          // Silently fail and use default location
           setMapLoaded(true);
+          clearTimeout(timeoutId);
         },
-        { timeout: 5000 } // 5 second timeout
+        { timeout: 3000 }
       );
     } else {
       setMapLoaded(true);
     }
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const formatDateTime = (dateTime) => {

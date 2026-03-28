@@ -83,3 +83,14 @@
 .nav-item.create .label {
   display: none;
 }
+
+/* Dark mode support */
+:root.dark .bottom-nav {
+  background: var(--gray-200);
+  border-top-color: var(--gray-300);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+}
+
+:root.dark .nav-item:hover {
+  background: var(--gray-300);
+}

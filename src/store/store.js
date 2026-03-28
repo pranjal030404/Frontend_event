@@ -15,6 +15,17 @@ export const useAuthStore = create((set) => ({
   }
 }));
 
+export const useThemeStore = create((set) => ({
+  isDark: localStorage.getItem('theme') === 'dark' || false,
+  toggleTheme: () => {
+    set((state) => {
+      const newValue = !state.isDark;
+      localStorage.setItem('theme', newValue ? 'dark' : 'light');
+      return { isDark: newValue };
+    });
+  }
+}));
+
 export const usePlanStore = create((set, get) => ({
   plans: [],
   selectedPlan: null,
@@ -43,5 +54,21 @@ export const useToastStore = create((set) => ({
     set((state) => ({
       toasts: state.toasts.filter((toast) => toast.id !== id)
     }));
+  }
+}));
+
+export const useLocationStore = create((set) => ({
+  defaultLocation: {
+    name: localStorage.getItem('defaultLocationName') || 'Noida Sector 62',
+    latitude: parseFloat(localStorage.getItem('defaultLocationLat') || '28.4089'),
+    longitude: parseFloat(localStorage.getItem('defaultLocationLon') || '77.3178')
+  },
+  isLocationSet: localStorage.getItem('isLocationSet') === 'true',
+  setDefaultLocation: (location) => {
+    localStorage.setItem('defaultLocationName', location.name);
+    localStorage.setItem('defaultLocationLat', location.latitude);
+    localStorage.setItem('defaultLocationLon', location.longitude);
+    localStorage.setItem('isLocationSet', 'true');
+    set({ defaultLocation: location, isLocationSet: true });
   }
 }));

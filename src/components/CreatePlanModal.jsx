@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useLocationStore } from '../store/store';
 import './CreatePlanModal.css';
 
 const CreatePlanModal = ({ isOpen, onClose, onSubmit }) => {
+  const defaultLocation = useLocationStore((state) => state.defaultLocation);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     location: {
-      name: '',
-      latitude: 51.505,
-      longitude: -0.09
+      name: defaultLocation.name,
+      latitude: defaultLocation.latitude,
+      longitude: defaultLocation.longitude
     },
     dateTime: '',
     tags: [],
